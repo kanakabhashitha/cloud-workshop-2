@@ -44,6 +44,13 @@
       color: hsl(210, 22%, 49%);
   }
 
+
+  .text-center{
+    background-color: #e6e6e6;
+    padding: 10px;
+  }
+
+
   table, th, td {
     border: 0.5px solid hsl(205, 78%, 60%);;
     border-collapse: collapse;
