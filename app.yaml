@@ -3,3 +3,12 @@ runtime: python39
 handlers:
   - url: /css
     static_dir: static/
+
+env_variables:
+  CLOUD_SQL_USERNAME: kanaka
+  CLOUD_SQL_PASSWORD: 11225
+  CLOUD_SQL_DATABASE_NAME: work-shop-db
+  CLOUD_SQL_CONNECTION_NAME: cloud-workshop-2:us-central1:cloud-workshop-mysql-instance
+  ssl_ca: ssl/server-ca.pem,
+  ssl_cert: ssl/client-cert.pem,
+  ssl_key: ssl/client-key.pem,

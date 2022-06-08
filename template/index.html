@@ -9,14 +9,14 @@
     <title>Cloud WorkShop Database</title>
   </head>
   <body>
-
     <div class="container">
-        <div class=" text-center">
-            <h1>FLASK APPLICATION RUNNING ON GCE</h4>
-            <p>Conventionally, Flask looks for view files in a folder with specific name. For the same reason we need to create a folder with the `templates` name and add our view files. In the `templates` folder, create a new file and name it `home.html`. This file contains the code snippets rendered on the homepage of our application.
-            </p>
-        </div>
-    </div>
+      <form action="/single-row-insert" method="get">
+        <input class="btn" type="submit" value="insert single row" />
+      </form>
 
+      <form action="/country-table" method="get" style="margin-top: 2rem">
+        <input class="btn" type="submit" value="country table" />
+      </form>
+    </div>
   </body>
 </html>
