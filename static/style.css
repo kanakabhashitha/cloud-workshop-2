@@ -113,8 +113,13 @@
     border-collapse: collapse;
     padding: 10px;
     color: hsl(205, 78%, 60%);;
-    font-weight: 600;
+    font-weight: 700;
   }
+
+  td{
+    font-weight: 400;
+  }
+
 
   table{
     margin-left: auto;
@@ -251,3 +256,19 @@ a{
   display: none;
 }
 
+.add-btn-conternar{
+  margin-top: 40px;
+  margin-bottom: 20px;
+  padding-right:  15px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  text-align: right;
+  background-color: #e6e6e6;
+}
+
+.country-img{
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 5px;
+  width: 100px;
+}

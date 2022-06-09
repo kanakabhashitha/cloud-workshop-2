@@ -10,21 +10,23 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/static/style.css" />
-    <!-- <link rel="stylesheet" href="/css/style.css" /> -->
+    <!-- <link rel="stylesheet" href="/static/style.css" /> -->
+    <link rel="stylesheet" href="/css/style.css" />
     <title>Country Table</title>
   </head>
   <body>
     <div class="container">
       <!-- Button trigger modal -->
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-toggle="modal"
-        data-target="#insertModal"
-      >
-        Launch demo modal
-      </button>
+      <div class="add-btn-conternar">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-toggle="modal"
+          data-target="#insertModal"
+        >
+          Add country
+        </button>
+      </div>
 
       <table class="table-hover">
         <thead>
@@ -40,7 +42,9 @@
         <tbody>
           {%for value in result%}
           <tr>
-            <td>{{value[5]}}</td>
+            <td>
+              <img class="country-img" src="{{value[5]}}" alt="country-img" />
+            </td>
             <td>{{value[1]}}</td>
             <td>{{value[2]}}</td>
             <td>{{value[3]}}</td>
@@ -51,10 +55,16 @@
                 class="btn"
                 data-toggle="modal"
                 data-target="#editModal{{value[0]}}"
+                style="background-color: #d9e317"
               >
                 Edit
               </a>
-              <button class="btn">Delete</button>
+              <a
+                href="/country-table-delete/{{value[0]}}"
+                class="btn"
+                style="background-color: #842029"
+                >Delete</a
+              >
             </td>
           </tr>
 
@@ -69,13 +79,19 @@
           >
             <div class="modal-dialog" role="document">
               <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                <div
+                  class="modal-header"
+                  style="background-color: hsl(205, 78%, 60%)"
+                >
+                  <h5 class="modal-title text-white" id="exampleModalLabel">
+                    Edit Country
+                  </h5>
                   <button
                     type="button"
                     class="close"
                     data-dismiss="modal"
                     aria-label="Close"
+                    style="color: #842029"
                   >
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -91,7 +107,8 @@
                       />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group text-left">
+                      <label>Country Name</label>
                       <input
                         type="text"
                         class="form-control"
@@ -101,7 +118,8 @@
                       />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group text-left">
+                      <label>Currency</label>
                       <input
                         type="text"
                         class="form-control"
@@ -111,7 +129,8 @@
                       />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group text-left">
+                      <label>Population</label>
                       <input
                         type="text"
                         class="form-control"
@@ -121,7 +140,8 @@
                       />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group text-left">
+                      <label>GDP</label>
                       <input
                         type="text"
                         class="form-control"
@@ -131,7 +151,8 @@
                       />
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group text-left">
+                      <label>Flag URL</label>
                       <input
                         type="text"
                         class="form-control"
@@ -142,13 +163,18 @@
                     </div>
 
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary">
+                      <button
+                        type="submit"
+                        class="btn btn-primary"
+                        style="background-color: #0f5132"
+                      >
                         Save Changes
                       </button>
                       <button
                         type="button"
                         class="btn btn-secondary"
                         data-dismiss="modal"
+                        style="background-color: #842029"
                       >
                         Close
                       </button>
@@ -179,13 +205,19 @@
     >
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <div
+            class="modal-header"
+            style="background-color: hsl(205, 78%, 60%)"
+          >
+            <h5 class="modal-title text-white" id="exampleModalLabel">
+              Add Country
+            </h5>
             <button
               type="button"
               class="close"
               data-dismiss="modal"
               aria-label="Close"
+              style="color: #842029"
             >
               <span aria-hidden="true">&times;</span>
             </button>
@@ -193,6 +225,7 @@
           <div class="modal-body">
             <form action="/country-table" method="post">
               <div class="form-group">
+                <label>Country Name</label>
                 <input
                   type="text"
                   class="form-control"
@@ -202,6 +235,7 @@
               </div>
 
               <div class="form-group">
+                <label>Currency</label>
                 <input
                   type="text"
                   class="form-control"
@@ -211,6 +245,7 @@
               </div>
 
               <div class="form-group">
+                <label>Population</label>
                 <input
                   type="text"
                   class="form-control"
@@ -220,6 +255,7 @@
               </div>
 
               <div class="form-group">
+                <label>GDP</label>
                 <input
                   type="text"
                   class="form-control"
@@ -229,6 +265,7 @@
               </div>
 
               <div class="form-group">
+                <label>Flag URL</label>
                 <input
                   type="text"
                   class="form-control"
@@ -238,11 +275,18 @@
               </div>
 
               <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  style="background-color: #0f5132"
+                >
+                  Submit
+                </button>
                 <button
                   type="button"
                   class="btn btn-secondary"
                   data-dismiss="modal"
+                  style="background-color: #842029"
                 >
                   Close
                 </button>

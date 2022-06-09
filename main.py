@@ -1,25 +1,19 @@
-from ast import Not
+from ast import Not, Or
 import sys
 import os
 import io
+from webbrowser import get
 
 from flask import Flask, flash, redirect, request, render_template
 from numpy import not_equal
 import pymysql
-# import mysql.connector
-# from mysql.connector.constants import ClientFlag
-# import pandas as pd
 
-db_user = os.environ.get('CLOUD_SQL_USERNAME')
-db_password = os.environ.get('CLOUD_SQL_PASSWORD')
-db_name = os.environ.get('CLOUD_SQL_DATABASE_NAME')
-db_connection_name = os.environ.get('CLOUD_SQL_CONNECTION_NAME')
 
 config = {
     'user': 'kanaka',
     'password': '11225',
     'database': 'work_shop_db',
-    'host': '35.226.133.70',
+    'host': '34.121.108.127',
     'ssl_ca': 'ssl/server-ca.pem',
     'ssl_cert': 'ssl/client-cert.pem',
     'ssl_key': 'ssl/client-key.pem'
@@ -114,35 +108,40 @@ def countryTable():
         gdp = request.form['gdp']
         flag_url = request.form['flag_url']
 
-        with connection:
+        if country_name == '' or currency == '' or population == '' or gdp == '' or flag_url == '':
+            return redirect(request.url)
 
-            sqlStatement = ("CREATE DATABASE IF NOT EXISTS work_shop_db")
-            cur.execute(sqlStatement)
+        else:
 
-            createTable = ("CREATE TABLE IF NOT EXISTS country_table ("
-                           "id INT NOT NULL AUTO_INCREMENT,"
-                           "countryName VARCHAR(100),"
-                           "currency  VARCHAR(50),"
-                           "population VARCHAR(200),"
-                           "gdp VARCHAR(50),"
-                           "flagURI VARCHAR(500),"
-                           "PRIMARY KEY (id))")
+            with connection:
 
-            cur.execute(createTable)
+                sqlStatement = ("CREATE DATABASE IF NOT EXISTS work_shop_db")
+                cur.execute(sqlStatement)
 
-            sqlData = ("INSERT INTO country_table (id, countryName, currency, population, gdp, flagURI) "
-                       "VALUES (%s, %s, %s, %s, %s, %s)")
+                createTable = ("CREATE TABLE IF NOT EXISTS country_table ("
+                               "id INT NOT NULL AUTO_INCREMENT,"
+                               "countryName VARCHAR(100),"
+                               "currency  VARCHAR(50),"
+                               "population VARCHAR(200),"
+                               "gdp VARCHAR(50),"
+                               "flagURI VARCHAR(500),"
+                               "PRIMARY KEY (id))")
 
-            cur.execute(sqlData, (0, country_name, currency,
-                                  population, gdp, flag_url))
-            connection.commit()
+                cur.execute(createTable)
 
-            with cur as cursor:
+                sqlData = ("INSERT INTO country_table (id, countryName, currency, population, gdp, flagURI) "
+                           "VALUES (%s, %s, %s, %s, %s, %s)")
 
-                cursor.execute("select * from country_table")
-                result = cursor.fetchall()
+                cur.execute(sqlData, (0, country_name, currency,
+                                      population, gdp, flag_url))
+                connection.commit()
 
-            cur.close()
+                with cur as cursor:
+
+                    cursor.execute("select * from country_table")
+                    result = cursor.fetchall()
+
+                cur.close()
 
         return render_template('country-table.html', result=result)
 
@@ -162,20 +161,53 @@ def updateTable():
         gdp = request.form['gdp']
         flag_url = request.form['flag_url']
 
-        sqlUpdate = "UPDATE `country_table` SET `countryName` = %s, `currency` = %s, `population` = %s, `gdp` = %s, `flagURI` = %s   WHERE `id` = %s"
+        if id == '' or country_name == '' or currency == '' or population == '' or gdp == '' or flag_url == '':
+            with cur as cursor:
 
-        cur.execute(sqlUpdate, (country_name, currency,
-                                population, gdp, flag_url, id))
-        connection.commit()
+                cursor.execute("select * from country_table")
+                result = cursor.fetchall()
 
-        with cur as cursor:
+            cur.close()
 
-            cursor.execute("select * from country_table")
-            result = cursor.fetchall()
+            return render_template('country-table.html', result=result)
 
-        cur.close()
+        else:
+
+            sqlUpdate = "UPDATE `country_table` SET `countryName` = %s, `currency` = %s, `population` = %s, `gdp` = %s, `flagURI` = %s   WHERE `id` = %s"
+
+            cur.execute(sqlUpdate, (country_name, currency,
+                                    population, gdp, flag_url, id))
+            connection.commit()
+
+            with cur as cursor:
+
+                cursor.execute("select * from country_table")
+                result = cursor.fetchall()
+
+            cur.close()
 
         return render_template('country-table.html', result=result)
+
+
+@app.route('/country-table-delete/<id>/', methods=['GET', 'POST'])
+def deleteTable(id):
+
+    connection = pymysql.connect(**config)
+    cur = connection.cursor()
+
+    sqlDelete = " DELETE FROM `country_table` WHERE `id` = %s"
+
+    cur.execute(sqlDelete, id)
+    connection.commit()
+
+    with cur as cursor:
+
+        cursor.execute("select * from country_table")
+        result = cursor.fetchall()
+
+    cur.close()
+
+    return render_template('country-table.html', result=result)
 
 
 if __name__ == "__main__":
